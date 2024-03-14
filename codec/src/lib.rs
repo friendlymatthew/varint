@@ -1,13 +1,11 @@
 mod bits_len;
-mod test_u64;
-mod test_i64;
+mod tests;
 
 use crate::bits_len::len_u64;
 pub const MAX_LEN_64: usize = 10;
 
 pub struct Rizz64;
 impl Rizz64 {
-
     /// `put_u64` encodes an u64 and returns the encoded buffer and the number of bytes written.
     /// Great for one-off encoding tasks.
     pub fn put_u64(x: u64) -> Result<([u8; MAX_LEN_64], usize), &'static str> {
@@ -66,6 +64,7 @@ impl Rizz64 {
     }
 
     /// `size_u64` returns the encoded size of the `u64` where size = [1, `MAX_LEN_64`].
+    #[inline]
     pub fn size_u64(x: u64) -> usize {
         ((9 * len_u64(x) as u32 + 64) / 64) as usize
     }
@@ -73,7 +72,7 @@ impl Rizz64 {
     /// `put_i64` encodes an i64 into a buffer and returns the number of bytes written.
     /// Great for one-off encoding tasks.
     pub fn put_i64(x: i64) -> Result<([u8; MAX_LEN_64], usize), &'static str> {
-        let mut buf= [0u8; MAX_LEN_64];
+        let mut buf = [0u8; MAX_LEN_64];
         let n = Self::append_i64(&mut buf, x)?;
 
         Ok((buf, n))
@@ -82,7 +81,7 @@ impl Rizz64 {
     /// `append_i64` encodes a i64 into a buffer and returns the number of bytes written. If the buffer is too small, it will return an `Err`
     /// Implements a form of zig-zag encoding for `i64`.
     pub fn append_i64(buf: &mut [u8], x: i64) -> Result<usize, &'static str> {
-        let mut ux= (x as u64) << 1;
+        let mut ux = (x as u64) << 1;
         if x < 0 {
             ux = !ux;
         }
@@ -96,7 +95,8 @@ impl Rizz64 {
         let (ux, n) = Self::u64(buf)?;
 
         let mut x = (ux >> 1) as i64;
-        if ux&1 != 0 { // checks sign
+        if ux & 1 != 0 {
+            // checks sign
             x = !x;
         }
 
@@ -104,6 +104,7 @@ impl Rizz64 {
     }
 
     /// `size_i64` returns the encoded size of the `i64` where size = [1, `MAX_LEN_64`].
+    #[inline]
     pub fn size_i64(x: i64) -> usize {
         let ux = if x < 0 {
             (!(x as u64)) << 1
