@@ -4,6 +4,7 @@
 <p  align=right><sub>* Fanum is a popular streamer who taxes his friends by taking <i>bites</i> of their food.</sub></p>
 
 <br>
+
 This crate provides an efficient and powerful variable-length integer codec using [LEB128](https://en.wikipedia.org/wiki/LEB128) compression. 
 After working with Golang's `encoding/binary` package, I wanted to rewrite some of the internals. For fun, I'll continue to refer to variable integers as *rizz*64. 
 
@@ -14,7 +15,7 @@ Basic metrics:
 
 | Decimal            | Powers of 2      | # of Bytes Needed |
 |:-------------------|------------------|-------------------|
-| 0..127             | 0..`2^7-1`       | 1                 |
+| 0..127             | `2^0-1`..`2^7-1` | 1                 |
 | 128..16383         | `2^7`..`2^14-1`  | 2                 |
 | 16384..2097151     | `2^14`..`2^21-1` | 3                 |
 | 2097152..268435455 | `2^21`..`2^28-1` | 4                 |

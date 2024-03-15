@@ -89,7 +89,7 @@ mod tests {
             }
 
             let mut buf = [0u8; MAX_LEN_64];
-            test_pack_rizz64::<u64>(&mut buf, test as u64, Rizz64::pack_u64, Rizz64::read_u64)
+            test_pack_rizz64::<u64>(&mut buf, test as u64, Rizz64::write_max_u64, Rizz64::read_u64)
         }
     }
 
@@ -97,7 +97,16 @@ mod tests {
     fn test_ipacker() {
         for test in TESTS {
             let mut buf = [0u8; MAX_LEN_64];
-            test_pack_rizz64::<i64>(&mut buf, test, Rizz64::pack_i64, Rizz64::read_i64)
+            test_pack_rizz64::<i64>(&mut buf, test, Rizz64::write_max_i64, Rizz64::read_i64)
+        }
+    }
+
+
+    #[test]
+    fn test_zig_zag() {
+        for x in TESTS {
+            let ux = Rizz64::zig_zag(x);
+            assert_eq!(x, Rizz64::decode_zig_zag(ux));
         }
     }
 }
