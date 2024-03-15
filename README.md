@@ -2,9 +2,10 @@
 <h2 align=center><i>rizz</i>64</h2>
 <p align=center>Fanum* tax 64-bit integers.</p>
 <p  align=right><sub>* Fanum is a popular streamer who taxes his friends by taking <i>bites</i> of their food.</sub></p>
-Efficient varint encoding, purely for fun and learning purposes. This crate deals with encoding unsigned and signed 64-bit integers.
 
-After working with Golang's `encoding/binary` package, I wanted to rewrite some of the internals. Just because it's funny, I'll continue to refer to variable integers as *rizz*64. 
+<br>
+This crate provides an efficient and powerful variable-length integer codec using [LEB128](https://en.wikipedia.org/wiki/LEB128) compression. 
+After working with Golang's `encoding/binary` package, I wanted to rewrite some of the internals. For fun, I'll continue to refer to variable integers as *rizz*64. 
 
 ### Why *rizz*64 is helpful
 It's super efficient in representing smaller numbers with fewer bytes. Instead of a fixed-size solution like `u64`, this form of encoding can store values using less space or memory.
@@ -29,12 +30,15 @@ For a given `u64`, we process the number by groups of 7 bits. For every group, i
 
 In the loop, the least significant 7 bits are extracted and packed into a buffer. The 8th bit is the most significant bit (MSB); we set the MSB to `1` to indicate there are more groups ahead. Then, we shift right (`>>=`) by 7 bits and we process the next group.
 
-After looping, the remaining bits of the number is packed into the buffer. This is the last byte and since we're halting, we don't set the MSB to `1`.
+After looping, the remaining bits of the number are packed into the buffer. This is the last byte and since we're halting, we don't set the MSB to `1`.
 
-### Todo
-- [ ] Go outside
 
-### Sources 
+
+
+### Literature 
 [LEB128](https://en.wikipedia.org/wiki/LEB128)<br>
 [sqlite variable-length ints](https://www.sqlite.org/src4/doc/trunk/www/varint.wiki)<br>
 [varint.go](https://go.dev/src/encoding/binary/varint.go)<br>
+
+### Todo
+- [ ] Go outside
