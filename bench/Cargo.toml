@@ -1,0 +1,17 @@
+[package]
+name = "bench"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+rizz64 = { path = "../rizz64" }
+criterion = { version = "0.5", features = ["html_reports"] }
+leb128 = "0.2.5"
+
+[[bench]]
+name = "rizzler"
+harness = false
+
+[[bench]]
+name = "leb128"
+harness = false
