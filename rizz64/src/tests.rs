@@ -1,12 +1,12 @@
 #[cfg(test)]
 mod tests {
-    use crate::{Rizz64, MAX_LEN_64};
+    use crate::{Rizz64, MAX_LEN_64, Error};
 
     fn test_rizz64<T>(
         buf: &mut [u8],
         value: T,
-        put: fn(&mut [u8], T) -> Result<usize, &str>,
-        decode: fn(&[u8]) -> Result<(T, usize), &'static str>,
+        put: fn(&mut [u8], T) -> Result<usize, Error>,
+        decode: fn(&[u8]) -> Result<(T, usize), Error>,
         size: fn(T) -> usize,
     ) where
         T: Eq + std::fmt::Debug + Copy,
@@ -16,6 +16,23 @@ mod tests {
                 assert_eq!(value, expected);
                 assert_eq!(n1, n2);
                 assert_eq!(n1, size(value));
+            }
+        }
+    }
+
+    fn test_pack_rizz64<T>(
+        buf: &mut [u8],
+        value: T,
+        pack: fn(buf: &mut[u8], x: T) -> Result<usize, Error>,
+        decode: fn(&[u8]) -> Result<(T, usize), Error>,
+    ) where
+        T: Eq + std::fmt::Debug + Copy,
+    {
+        if let Ok(len) = pack(buf, value) {
+            assert_eq!(len, MAX_LEN_64);
+
+            if let Ok((expected, _x)) = decode(buf) {
+                assert_eq!(expected, value);
             }
         }
     }
@@ -60,6 +77,27 @@ mod tests {
         for test in TESTS {
             let mut buf = [0u8; MAX_LEN_64];
             test_rizz64::<i64>(&mut buf, test, Rizz64::write_i64, Rizz64::read_i64, Rizz64::size_i64);
+        }
+    }
+
+    #[test]
+    fn test_upacker() {
+        for test in TESTS {
+            let mut test = test;
+            if test < 0 {
+                test = !test;
+            }
+
+            let mut buf = [0u8; MAX_LEN_64];
+            test_pack_rizz64::<u64>(&mut buf, test as u64, Rizz64::pack_u64, Rizz64::read_u64)
+        }
+    }
+
+    #[test]
+    fn test_ipacker() {
+        for test in TESTS {
+            let mut buf = [0u8; MAX_LEN_64];
+            test_pack_rizz64::<i64>(&mut buf, test, Rizz64::pack_i64, Rizz64::read_i64)
         }
     }
 }
