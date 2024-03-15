@@ -34,5 +34,6 @@ After looping, the remaining bits of the number is packed into the buffer. This 
 - [ ] Go outside
 
 ### Sources 
+[LEB128](https://en.wikipedia.org/wiki/LEB128)<br>
 [sqlite variable-length ints](https://www.sqlite.org/src4/doc/trunk/www/varint.wiki)<br>
 [varint.go](https://go.dev/src/encoding/binary/varint.go)<br>
