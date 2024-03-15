@@ -15,3 +15,11 @@ harness = false
 [[bench]]
 name = "leb128"
 harness = false
+
+[[bench]]
+name="bit_len"
+harness =  false
+
+[[bench]]
+name="ilog2"
+harness = false
