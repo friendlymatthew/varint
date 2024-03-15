@@ -1,7 +1,10 @@
-## *rizz*64
+
+<h2 align=center><i>rizz</i>64</h2>
+<p align=center>Fanum* tax 64-bit integers.</p>
+<p  align=right><sub>* Fanum is a popular streamer who taxes his friends by taking <i>bites</i> of their food.</sub></p>
 Efficient varint encoding, purely for fun and learning purposes. This crate deals with encoding unsigned and signed 64-bit integers.
 
-After working with Golang's `encoding/binary` package, I wanted to rewrite some of the internals. Just because it's funny, I'll continue refer to variable integers as *rizz*64. 
+After working with Golang's `encoding/binary` package, I wanted to rewrite some of the internals. Just because it's funny, I'll continue to refer to variable integers as *rizz*64. 
 
 ### Why *rizz*64 is helpful
 It's super efficient in representing smaller numbers with fewer bytes. Instead of a fixed-size solution like `u64`, this form of encoding can store values using less space or memory.
@@ -28,9 +31,7 @@ In the loop, the least significant 7 bits are extracted and packed into a buffer
 
 After looping, the remaining bits of the number is packed into the buffer. This is the last byte and since we're halting, we don't set the MSB to `1`.
 
-
 ### Todo
-- [ ] Performance testing
 - [ ] Go outside
 
 ### Sources 
