@@ -13,7 +13,7 @@ fn bench_new(c: &mut Criterion) {
             BenchmarkId::new("Edge", format!("{} {}", "write_u64", value)),
             &value,
             |b, &v| {
-                let mut buffer = [0u8; 10];
+                let mut buffer = std::hint::black_box([0u8; 10]);
                 b.iter(|| Rizz64::write_u64(&mut buffer, v))
             },
         );
@@ -26,7 +26,7 @@ fn bench_new(c: &mut Criterion) {
             BenchmarkId::new("Log", format!("{} {}", "write_u64", value)),
             &value,
             |b, &v| {
-                let mut buffer = [0u8; 10];
+                let mut buffer = std::hint::black_box([0u8; 10]);
                 b.iter(|| Rizz64::write_u64(&mut buffer, v))
             },
         );
@@ -39,7 +39,8 @@ fn bench_new(c: &mut Criterion) {
             BenchmarkId::new("Edge", format!("{} {}", "write_i64", value)),
             &value,
             |b, &v| {
-                let mut buffer = [0u8; 10];
+
+                let mut buffer = std::hint::black_box([0u8; 10]);
                 b.iter(|| Rizz64::write_i64(&mut buffer, v))
             },
         );
@@ -52,7 +53,7 @@ fn bench_new(c: &mut Criterion) {
             BenchmarkId::new("Log", format!("{} {}", "write_i64", value)),
             &value,
             |b, &v| {
-                let mut buffer = [0u8; 10];
+                let mut buffer = std::hint::black_box([0u8; 10]);
                 b.iter(|| Rizz64::write_i64(&mut buffer, v))
             },
         );

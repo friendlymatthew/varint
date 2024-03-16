@@ -9,7 +9,7 @@ fn bench_leb128(c: &mut Criterion) {
             BenchmarkId::new("Edge", format!("{} {}", "leb128::write::unsigned", value)),
             &value,
             |b, &v| {
-                let mut buffer = [0u8; 10];
+                let mut buffer = std::hint::black_box([0u8; 10]);
                 b.iter(|| {
                     let mut writable = &mut buffer[..];
                     leb128::write::unsigned(&mut writable, v).expect("Should write number");
@@ -25,7 +25,7 @@ fn bench_leb128(c: &mut Criterion) {
             BenchmarkId::new("Log", format!("{} {}", "leb128::write::unsigned", value)),
             &value,
             |b, &v| {
-                let mut buffer = [0u8; 10];
+                let mut buffer = std::hint::black_box([0u8; 10]);
                 b.iter(|| {
                     let mut writable = &mut buffer[..];
                     leb128::write::unsigned(&mut writable, v).expect("Should write number");
@@ -42,7 +42,7 @@ fn bench_leb128(c: &mut Criterion) {
             BenchmarkId::new("Edge", format!("{} {}", "leb128::write::signed", value)),
             &value,
             |b, &v| {
-                let mut buffer = [0u8; 10];
+                let mut buffer = std::hint::black_box([0u8; 10]);
                 b.iter(|| {
                     let mut writable = &mut buffer[..];
                     leb128::write::signed(&mut writable, v).expect("Should write number");
@@ -58,7 +58,7 @@ fn bench_leb128(c: &mut Criterion) {
             BenchmarkId::new("Log", format!("{} {}", "leb128::write::signed", value)),
             &value,
             |b, &v| {
-                let mut buffer = [0u8; 10];
+                let mut buffer = std::hint::black_box([0u8; 10]);
                 b.iter(|| {
                     let mut writable = &mut buffer[..];
                     leb128::write::signed(&mut writable, v).expect("Should write number");

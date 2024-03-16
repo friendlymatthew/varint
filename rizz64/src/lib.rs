@@ -23,18 +23,14 @@ impl Rizz64 {
 
     #[inline]
     pub fn write_u64(buf: &mut [u8], mut x: u64) -> Result<usize, Error> {
-        if Self::size_u64(x) > buf.len() {
-            return Err(Error::BufferOverflow);
-        }
-
-        for i in 0..buf.len() {
+        for i in 0..10 {
             let byte = (x & 0x7F) as u8;
             x >>= 7;
 
             let more = (x != 0) as u8;
             buf[i] = byte | (more << 7);
 
-            if more == 0 { return Ok(i) }
+            if more == 0 { return Ok(i + 1); }
         }
 
         Err(Error::BufferOverflow)
