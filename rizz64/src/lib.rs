@@ -27,19 +27,17 @@ impl Rizz64 {
             return Err(Error::BufferOverflow);
         }
 
-        let mut i = 0;
-        loop {
+        for i in 0..buf.len() {
             let byte = (x & 0x7F) as u8;
             x >>= 7;
+
             let more = (x != 0) as u8;
+            buf[i] = byte | (more << 7);
 
-            unsafe {
-                *buf.get_unchecked_mut(i) = byte | (more << 7);
-            }
-
-            i += 1;
-            if more == 0 { return Ok(i); }
+            if more == 0 { return Ok(i) }
         }
+
+        Err(Error::BufferOverflow)
     }
 
     /// `write_max_u64` creates maximal-encoded variable integers. It does the following:
