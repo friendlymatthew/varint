@@ -34,7 +34,6 @@ fn bench_leb128(c: &mut Criterion) {
         );
     }
 
-
     let edge_cases: [i64; 6] = [0, 1, i64::MAX, i64::MAX / 2, 1 << 63, (-1 << 63) + 1];
     // Bench edge cases
     for &value in edge_cases.iter() {

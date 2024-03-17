@@ -1,7 +1,6 @@
 use criterion::{criterion_group, criterion_main, BenchmarkId, Criterion};
 
 fn bench_bit_len(c: &mut Criterion) {
-
     for i in 0..64 {
         let x = 1u64 << i;
         c.bench_with_input(
@@ -11,7 +10,7 @@ fn bench_bit_len(c: &mut Criterion) {
                 b.iter(|| {
                     rizz64::Rizz64::size_u64(v);
                 })
-            }
+            },
         );
     }
 }

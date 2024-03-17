@@ -6,21 +6,20 @@ pub const MAX_LEN_64: usize = 10;
 
 #[derive(Debug)]
 pub enum Error {
-    BufferOverflow
+    BufferOverflow,
 }
 impl Display for Error {
     fn fmt(&self, f: &mut Formatter) -> Result<(), fmtError> {
         match *self {
-            Error::BufferOverflow=> {
+            Error::BufferOverflow => {
                 write!(f, "The number being read is larger than can be represented")
             }
         }
     }
 }
 
-pub struct Rizz64;
-impl Rizz64 {
-
+pub struct Rizz128;
+impl Rizz128 {
     #[inline]
     pub fn write_u64(buf: &mut [u8], mut x: u64) -> Result<usize, Error> {
         for i in 0..10 {
@@ -30,7 +29,9 @@ impl Rizz64 {
             let more = (x != 0) as u8;
             buf[i] = byte | (more << 7);
 
-            if more == 0 { return Ok(i + 1); }
+            if more == 0 {
+                return Ok(i + 1);
+            }
         }
 
         Err(Error::BufferOverflow)
@@ -40,14 +41,11 @@ impl Rizz64 {
     ///
     ///  reserves maximum space, writes value, fills the rest with continuation bit
     #[inline]
-    pub fn write_max_u64(buf: &mut[u8], x: u64) -> Result<usize, Error> {
+    pub fn write_max_u64(buf: &mut [u8], x: u64) -> Result<usize, Error> {
         let mut read = Self::write_u64(buf, x)?;
 
-        while read < MAX_LEN_64 {
-            unsafe {
-                *buf.get_unchecked_mut(read) = 0x80;
-            }
-
+        for i in read..MAX_LEN_64 {
+            buf[i] = 0x80;
             read += 1;
         }
 
@@ -81,9 +79,8 @@ impl Rizz64 {
 
     #[inline]
     pub fn size_u64(x: u64) -> usize {
-        return if x == 0 { 1 } else {
-            ((64 - x.leading_zeros() as usize) + 6) / 7
-        }
+        let bits = x.max(1).ilog2() + 1;
+        ((9 * bits + 64) / 64) as usize
     }
 
     #[inline]
@@ -98,7 +95,7 @@ impl Rizz64 {
     }
 
     #[inline]
-    pub fn write_max_i64(buf: &mut[u8], x: i64) -> Result<usize, Error>{
+    pub fn write_max_i64(buf: &mut [u8], x: i64) -> Result<usize, Error> {
         Self::write_max_u64(buf, Self::zig_zag(x))
     }
 
