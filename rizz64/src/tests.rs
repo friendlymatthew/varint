@@ -75,6 +75,17 @@ mod tests {
                 Rizz128::size_u64,
             );
         }
+
+        for i in 0..1024 {
+            let mut buf = [0u8; MAX_LEN_64];
+            test_rizz64::<u64>(
+                &mut buf,
+                i as u64,
+                Rizz128::write_u64,
+                Rizz128::read_u64,
+                Rizz128::size_u64,
+            );
+        }
     }
 
     #[test]
@@ -84,6 +95,17 @@ mod tests {
             test_rizz64::<i64>(
                 &mut buf,
                 test,
+                Rizz128::write_i64,
+                Rizz128::read_i64,
+                Rizz128::size_i64,
+            );
+        }
+
+        for i in -1024..1024 {
+            let mut buf = [0u8; MAX_LEN_64];
+            test_rizz64::<i64>(
+                &mut buf,
+                i as i64,
                 Rizz128::write_i64,
                 Rizz128::read_i64,
                 Rizz128::size_i64,

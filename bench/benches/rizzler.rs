@@ -1,5 +1,5 @@
 /// the Rizzler
-use rizz64::Rizz64;
+use rizz64::Rizz128;
 
 use criterion::{criterion_group, criterion_main, BenchmarkId, Criterion};
 
@@ -12,7 +12,7 @@ fn bench_new(c: &mut Criterion) {
             &value,
             |b, &v| {
                 let mut buffer = std::hint::black_box([0u8; 10]);
-                b.iter(|| Rizz64::write_u64(&mut buffer, v))
+                b.iter(|| Rizz128::write_u64(&mut buffer, v))
             },
         );
     }
@@ -25,7 +25,7 @@ fn bench_new(c: &mut Criterion) {
             &value,
             |b, &v| {
                 let mut buffer = std::hint::black_box([0u8; 10]);
-                b.iter(|| Rizz64::write_u64(&mut buffer, v))
+                b.iter(|| Rizz128::write_u64(&mut buffer, v))
             },
         );
     }
@@ -38,7 +38,7 @@ fn bench_new(c: &mut Criterion) {
             &value,
             |b, &v| {
                 let mut buffer = std::hint::black_box([0u8; 10]);
-                b.iter(|| Rizz64::write_i64(&mut buffer, v))
+                b.iter(|| Rizz128::write_i64(&mut buffer, v))
             },
         );
     }
@@ -51,7 +51,7 @@ fn bench_new(c: &mut Criterion) {
             &value,
             |b, &v| {
                 let mut buffer = std::hint::black_box([0u8; 10]);
-                b.iter(|| Rizz64::write_i64(&mut buffer, v))
+                b.iter(|| Rizz128::write_i64(&mut buffer, v))
             },
         );
     }

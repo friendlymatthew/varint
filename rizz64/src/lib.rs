@@ -22,7 +22,11 @@ pub struct Rizz128;
 impl Rizz128 {
     #[inline]
     pub fn write_u64(buf: &mut [u8], mut x: u64) -> Result<usize, Error> {
-        for i in 0..10 {
+        if Self::size_u64(x) > buf.len() {
+            return Err(Error::BufferOverflow)
+        }
+
+        for i in 0..MAX_LEN_64 {
             let byte = (x & 0x7F) as u8;
             x >>= 7;
 
@@ -37,9 +41,6 @@ impl Rizz128 {
         Err(Error::BufferOverflow)
     }
 
-    /// `write_max_u64` creates maximal-encoded variable integers. It does the following:
-    ///
-    ///  reserves maximum space, writes value, fills the rest with continuation bit
     #[inline]
     pub fn write_max_u64(buf: &mut [u8], x: u64) -> Result<usize, Error> {
         let mut read = Self::write_u64(buf, x)?;
