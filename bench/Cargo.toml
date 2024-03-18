@@ -9,11 +9,19 @@ criterion = { version = "0.5", features = ["html_reports"] }
 leb128 = "0.2.5"
 
 [[bench]]
-name = "rizzler"
+name = "rizzler_encode"
 harness = false
 
 [[bench]]
-name = "leb128"
+name = "rizzler_decode"
+harness = false
+
+[[bench]]
+name = "leb128_encode"
+harness = false
+
+[[bench]]
+name = "leb128_decode"
 harness = false
 
 [[bench]]

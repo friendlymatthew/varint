@@ -1,8 +1,8 @@
 #[cfg(test)]
 mod tests {
-    use crate::{Error, Rizz128, MAX_LEN_64};
+    use crate::{Error, Rizz64, MAX_LEN_64};
 
-    fn test_rizz64<T>(
+    fn test_rizz64_roundtrip<T>(
         buf: &mut [u8],
         value: T,
         put: fn(&mut [u8], T) -> Result<usize, Error>,
@@ -20,7 +20,7 @@ mod tests {
         }
     }
 
-    fn test_pack_rizz64<T>(
+    fn test_pack_rizz64_roundtrip<T>(
         buf: &mut [u8],
         value: T,
         pack: fn(buf: &mut [u8], x: T) -> Result<usize, Error>,
@@ -67,23 +67,23 @@ mod tests {
             }
 
             let mut buf = [0u8; MAX_LEN_64];
-            test_rizz64::<u64>(
+            test_rizz64_roundtrip::<u64>(
                 &mut buf,
                 test as u64,
-                Rizz128::write_u64,
-                Rizz128::read_u64,
-                Rizz128::size_u64,
+                Rizz64::write_u64,
+                Rizz64::read_u64,
+                Rizz64::size_u64,
             );
         }
 
         for i in 0..1024 {
             let mut buf = [0u8; MAX_LEN_64];
-            test_rizz64::<u64>(
+            test_rizz64_roundtrip::<u64>(
                 &mut buf,
                 i as u64,
-                Rizz128::write_u64,
-                Rizz128::read_u64,
-                Rizz128::size_u64,
+                Rizz64::write_u64,
+                Rizz64::read_u64,
+                Rizz64::size_u64,
             );
         }
     }
@@ -92,23 +92,23 @@ mod tests {
     fn test_ibasic() {
         for test in TESTS {
             let mut buf = [0u8; MAX_LEN_64];
-            test_rizz64::<i64>(
+            test_rizz64_roundtrip::<i64>(
                 &mut buf,
                 test,
-                Rizz128::write_i64,
-                Rizz128::read_i64,
-                Rizz128::size_i64,
+                Rizz64::write_i64,
+                Rizz64::read_i64,
+                Rizz64::size_i64,
             );
         }
 
         for i in -1024..1024 {
             let mut buf = [0u8; MAX_LEN_64];
-            test_rizz64::<i64>(
+            test_rizz64_roundtrip::<i64>(
                 &mut buf,
                 i as i64,
-                Rizz128::write_i64,
-                Rizz128::read_i64,
-                Rizz128::size_i64,
+                Rizz64::write_i64,
+                Rizz64::read_i64,
+                Rizz64::size_i64,
             );
         }
     }
@@ -122,11 +122,11 @@ mod tests {
             }
 
             let mut buf = [0u8; MAX_LEN_64];
-            test_pack_rizz64::<u64>(
+            test_pack_rizz64_roundtrip::<u64>(
                 &mut buf,
                 test as u64,
-                Rizz128::write_max_u64,
-                Rizz128::read_u64,
+                Rizz64::write_max_u64,
+                Rizz64::read_u64,
             )
         }
     }
@@ -135,15 +135,20 @@ mod tests {
     fn test_ipacker() {
         for test in TESTS {
             let mut buf = [0u8; MAX_LEN_64];
-            test_pack_rizz64::<i64>(&mut buf, test, Rizz128::write_max_i64, Rizz128::read_i64)
+            test_pack_rizz64_roundtrip::<i64>(
+                &mut buf,
+                test,
+                Rizz64::write_max_i64,
+                Rizz64::read_i64,
+            )
         }
     }
 
     #[test]
     fn test_zig_zag() {
         for x in TESTS {
-            let ux = Rizz128::zig_zag(x);
-            assert_eq!(x, Rizz128::decode_zig_zag(ux));
+            let ux = Rizz64::zig_zag(x);
+            assert_eq!(x, Rizz64::decode_zig_zag(ux));
         }
     }
 }

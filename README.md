@@ -1,5 +1,5 @@
 
-<h2 align=center><i>rizz</i>128</h2>
+<h2 align=center><i>rizz</i>64</h2>
 <p align=center>Fanum* tax 64-bit integers.</p>
 <p  align=right><sub>* Fanum is a popular streamer who taxes his friends by taking <i>bites</i> of their food.</sub></p>
 

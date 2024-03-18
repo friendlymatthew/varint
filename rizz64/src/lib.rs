@@ -18,12 +18,12 @@ impl Display for Error {
     }
 }
 
-pub struct Rizz128;
-impl Rizz128 {
+pub struct Rizz64;
+impl Rizz64 {
     #[inline]
     pub fn write_u64(buf: &mut [u8], mut x: u64) -> Result<usize, Error> {
         if Self::size_u64(x) > buf.len() {
-            return Err(Error::BufferOverflow)
+            return Err(Error::BufferOverflow);
         }
 
         for i in 0..MAX_LEN_64 {
